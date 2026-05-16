@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wells Fargo Web Portal</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* --- View Wrapper Rules --- */
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            color: #333333;
+            background-color: #f4f0eb;
+        }
+
+        .phone-view {
+            width: 100%;
+            max-width: 412px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* --- LOGIN SCREEN STYLES --- */
+        .login-bg {
+            background: linear-gradient(to bottom, #d2c4e3 0%, #f7f5fb 40%, #e69d73 75%, #b94227 100%);
+            padding: 20px;
+            align-items: center;
+            display: flex;
+        }
+
+        .container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 24px;
+            letter-spacing: 0.5px;
+            color: #000;
+        }
+
+        .location-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .greeting {
+            font-size: 36px;
+            color: #333;
+            font-weight: 300;
+            margin-bottom: 24px;
+            align-self: flex-start;
+        }
+
+        .login-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            width: 100%;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 18px;
+            border: none;
+            border-bottom: 1px solid #999;
+            background: transparent;
+            outline: none;
+            color: #333;
+        }
+
+        .input-group input::placeholder {
+            color: #757575;
+        }
+
+        .input-group .show-toggle {
+            position: absolute;
+            right: 0;
+            top: 10px;
+            color: #2b2b2b;
+            font-size: 14px;
+            text-decoration: underline;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .checkbox-item input {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 1px solid #757575;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            text-align: center;
+            border: none;
+            outline: none;
+        }
+
+        .btn-enroll {
+            background: transparent;
+            border: 1px solid #333;
+            color: #333;
+        }
+
+        .btn-signon {
+            background: #dbdbdb;
+            color: #8c8c8c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: not-allowed;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .btn-signon.active-ready {
+            background-color: #d11212;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        .links-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-item {
+            color: #1a1f51;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .promo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .promo-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 140px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .promo-icon {
+            width: 36px;
+            height: 36px;
+            background-color: #f6d155;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .promo-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #222;
+            line-height: 1.3;
+            margin-bottom: 4px;
+        }
+
+        .promo-sub {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .promo-link {
+            font-size: 13px;
+            color: #444;
+            text-decoration: underline;
+            margin-top: auto;
+        }
+
+        /* --- DASHBOARD HOME STYLES --- */
+        .dashboard-bg {
+            background: linear-gradient(to bottom, #dbe2e9 0%, #f4f0eb 40%, #f4f0eb 100%);
+            padding-bottom: 90px;
+        }
+
+        .top-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 20px;
+            padding: 24px 20px 10px 20px;
+        }
+
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .badge {
+            position: absolute;
+            top: -6px;
+            right: -10px;
+            background-color: #d11212;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 10px;
+            padding: 2px 6px;
+            min-width: 18px;
+            height: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sign-off {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #333333;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .greeting-container {
+            padding: 30px 24px 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .greeting-text {
+            font-size: 38px;
+            font-weight: 300;
+            line-height: 1.2;
+            color: #222222;
+        }
+
+        .user-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .customer-since {
+            font-size: 16px;
+            color: #555555;
+            margin-top: 12px;
+            font-weight: 400;
+        }
+
+        .content-body {
+            padding: 0 16px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            cursor: pointer;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #111111;
+            margin-bottom: 8px;
+        }
+
+        .balance {
+            font-size: 34px;
+            font-weight: 300;
+            color: #222222;
+            margin-bottom: 6px;
+        }
+
+        .balance-label {
+            font-size: 13px;
+            color: #666666;
+        }
+
+        .error-banner {
+            background-color: #fdf2f2;
+            border-left: 4px solid #d11212;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .error-icon {
+            color: #d11212;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .error-text {
+            font-size: 14px;
+            color: #222222;
+            line-height: 1.4;
+        }
+
+        .error-title {
+            font-weight: 700;
+            color: #d11212;
+            margin-bottom: 4px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0 25px 0;
+        }
+
+        .btn-outline {
+            background: none;
+            border: 1px solid #333333;
+            border-radius: 25px;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333333;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-outline:active {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        .fico-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .fico-wheel {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 4px solid transparent;
+            border-top-color: #e2b43c;
+            border-right-color: #2e7d32;
+            border-left-color: #c62828;
+            transform: rotate(45deg);
+        }
+
+        .fico-text {
+            font-size: 15px;
+            color: #222222;
+            font-weight: 400;
+        }
+
+        .disclaimer-section {
+            padding: 25px 24px;
+            font-size: 13px;
+            color: #444444;
+            line-height: 1.4;
+        }
+
+        .equal-housing {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 25px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #222222;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 412px;
+            background-color: #ffffff;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0 28px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #555555;
+            font-size: 11px;
+            text-decoration: none;
+            width: 20%;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            color: #d11212;
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .icon-home {
+            width: 22px;
+            height: 20px;
+            background-color: #d11212;
+            clip-path: polygon(50% 0%, 0% 40%, 15% 40%, 15% 100%, 85% 100%, 85% 40%, 100% 40%);
+        }
+
+        .icon-svg {
+            fill: none;
+            stroke: #555555;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* --- GLOBAL ERROR MODAL OVERLAY --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .modal-box {
+            background-color: #ffffff;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 320px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111111;
+            margin-bottom: 8px;
+        }
+
+        .modal-text {
+            font-size: 14px;
+            color: #555555;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .modal-btn {
+            background-color: #d11212;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-view">
+
+        <div id="loginView" class="container login-bg">
+            <div class="header">
+                <div class="logo">WELLS FARGO</div>
+                <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 21s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 7.2c0 7.3-8 11.8-8 11.8z"/>
+                    <circle cx="12" cy="9" r="2.5"/>
+                </svg>
+            </div>
+
+            <h1 class="greeting" id="login-greeting-msg">Good morning</h1>
+
+            <div class="login-card">
+                <div class="input-group">
+                    <input type="text" id="usernameInput" placeholder="Username" autofocus autocomplete="off">
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="passwordInput" placeholder="Password" autocomplete="off">
+                    <span class="show-toggle" id="visibilityToggle">Show</span>
+                </div>
+
+                <div class="checkbox-container">
+                    <label class="checkbox-item">
+                        <input type="checkbox"> Save username
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox"> Set up Face ID&reg;
+                    </label>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-enroll" onclick="alert('Enrolling alternative route...')">Enroll</button>
+                    <button class="btn btn-signon" id="signOnActionButton" disabled>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                        </svg>
+                        Sign On
+                    </button>
+                </div>
+
+                <div class="links-group">
+                    <a href="#" class="link-item" onclick="alert('Passkey profile options...')">➔ Sign on with a passkey</a>
+                    <a href="#" class="link-item" onclick="alert('Recovery process triggered...')">➔ Forgot username or password?</a>
+                </div>
+            </div>
+
+            <div class="promo-grid">
+                <div class="promo-card">
+                    <div>
+                        <div class="promo-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polygon points="16.24,7.76 14.12,14.12 7.76,16.24 9.88,9.88"/>
+                            </svg>
+                        </div>
+                        <div class="promo-title">Explore our products</div>
+                        <div class="promo-sub">Find your fit</div>
+                    </div>
+                </div>
+
+                <div class="promo-card">
+                    <div>
+                        <div class="promo-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2">
+                                <rect x="2" y="5" width="20" height="14" rx="2"/>
+                                <line x1="2" y1="10" x2="22" y2="10"/>
+                            </svg>
+                        </div>
+                        <div class="promo-title">Enjoy 0% intro APR for 21 months</div>
+                    </div>
+                    <a href="#" class="promo-link">Learn more</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboardView" class="dashboard-bg" style="display: none;">
+            <div class="top-actions">
+                <div class="notification-icon" onclick="showLockAlert()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/>
+                    </svg>
+                    <div class="badge">12</div>
+                </div>
+                <a href="#" class="sign-off" onclick="event.stopPropagation(); triggerSignOut();">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+                    </svg>
+                    Sign Off
+                </a>
+            </div>
+
+            <div class="greeting-container">
+                <div>
+                    <div class="greeting-text" id="greeting-field">Good morning,<br>Derrick Henry</div>
+                    <div class="customer-since">Customer since 2019</div>
+                </div>
+                <img src="https://i.ibb.co/bjWK2BfH/IMG-5204.jpg" alt="User Profile Image" class="user-avatar" onclick="showLockAlert()">
+            </div>
+
+            <div class="content-body">
+                <div class="error-banner" onclick="showLockAlert()">
+                    <div class="error-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                    </div>
+                    <div class="error-text">
+                        <div class="error-title">Account Access Restricted</div>
+                        Your online access has been temporarily locked. Please contact our corporate headquarters immediately for complete details and resolution steps.
+                    </div>
+                </div>
+                
+                <div class="card" onclick="showLockAlert()">
+                    <div class="card-title">EVERYDAY CHECKING ...6514</div>
+                    <div class="balance">$18,576.77</div>
+                    <div class="balance-label">Available balance</div>
+                </div>
+
+                <div class="btn-container">
+                    <button class="btn-outline" onclick="showLockAlert()">Open a new account</button>
+                </div>
+
+                <div class="card fico-card" onclick="showLockAlert()">
+                    <div class="fico-wheel"></div>
+                    <div class="fico-text">View your FICO&reg; Credit Score</div>
+                </div>
+            </div>
+
+            <div class="disclaimer-section">
+                <p>Deposit products offered by Wells Fargo Bank, N.A. Member FDIC.</p>
+                <div class="equal-housing">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <path d="M3 11h18M12 3v18"/>
+                    </svg>
+                    Equal Housing Lender
+                </div>
+            </div>
+
+            <div class="bottom-nav">
+                <a href="#" class="nav-item active" onclick="showLockAlert()">
+                    <div class="icon-home" style="margin-bottom: 5px;"></div>
+                    Accounts
+                </a>
+                <a href="#" class="nav-item" onclick="showLockAlert()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="icon-svg"><path d="M2 17h20M12 2v15M12 2l-4 4m4-4l4 4M4 21h16"/></svg>
+                    Deposit
+                </a>
+                <a href="#" class="nav-item" onclick="showLockAlert()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="icon-svg">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v12M16 10H12"/>
+                        <text x="7" y="14" font-size="10" font-family="sans-serif" font-weight="bold" fill="#555" stroke="none">$</text>
+                    </svg>
+                    Pay & Transfer
+                </a>
+                <a href="#" class="nav-item" onclick="showLockAlert()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="icon-svg"><circle cx="12" cy="12" r="10"/><path d="M16.2 7.8l-2 6.4-6.4 2 2-6.4z"/></svg>
+                    Explore
+                </a>
+                <a href="#" class="nav-item" onclick="showLockAlert()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" class="icon-svg"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    Menu
+                </a>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="lockModal">
+            <div class="modal-box">
+                <div class="modal-title">Access Locked</div>
+                <div class="modal-text">This profile feature is unavailable. Please visit or contact corporate headquarters to update and confirm your current identification profile records.</div>
+                <button class="modal-btn" onclick="closeLockAlert()">OK</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const uField = document.getElementById('usernameInput');
+        const pField = document.getElementById('passwordInput');
+        const sBtn = document.getElementById('signOnActionButton');
+        const vToggle = document.getElementById('visibilityToggle');
+
+        // Dynamic multi-timezone layout string processor (Target Location: South Carolina, USA)
+        function fetchGreetingString() {
+            try {
+                const formatter = new Intl.DateTimeFormat('en-US', {
+                    timeZone: 'America/New_York',
+                    hour: 'numeric',
+                    hour12: false
+                });
+                const scHour = parseInt(formatter.format(new Date()), 10);
+                
+                if (scHour >= 12 && scHour < 17) return "Good afternoon";
+                if (scHour >= 17 && scHour < 22) return "Good evening";
+                if (scHour >= 22 || scHour < 5) return "Good night";
+                return "Good morning";
+            } catch (e) {
+                return "Good morning";
+            }
+        }
+
+        function syncAllLayoutGreetings() {
+            const currentGreetingText = fetchGreetingString();
+            // Assign to login view title
+            document.getElementById('login-greeting-msg').textContent = currentGreetingText;
+            // Assign to active content dashboard layout area
+            document.getElementById('greeting-field').innerHTML = currentGreetingText + ',<br>Derrick Henry';
+        }
+
+        // Live input credential tracking evaluation
+        function evaluateInputs() {
+            if (uField.value.trim() !== "" && pField.value.trim() !== "") {
+                sBtn.disabled = false;
+                sBtn.classList.add('active-ready');
+            } else {
+                sBtn.disabled = true;
+                sBtn.classList.remove('active-ready');
+            }
+        }
+
+        // Processing validation execution logic on interaction click
+        function processAuthentication() {
+            const userTarget = "DERRICK22";
+            const passTarget = "Derrick@2";
+
+            if (uField.value.trim() === userTarget && pField.value.trim() === passTarget) {
+                // Successful connection match simulation 
+                document.getElementById('loginView').style.display = 'none';
+                document.getElementById('dashboardView').style.display = 'block';
+                window.scrollTo(0, 0);
+            } else {
+                alert("Invalid username or password. Please use the assigned credentials configuration.");
+            }
+        }
+
+        function triggerSignOut() {
+            alert('Signing off...');
+            // Clear passwords fields reset layout display back to standard state
+            pField.value = "";
+            evaluateInputs();
+            document.getElementById('dashboardView').style.display = 'none';
+            document.getElementById('loginView').style.display = 'flex';
+            window.scrollTo(0, 0);
+        }
+
+        // Input Password Show/Hide Toggle Control Logic
+        vToggle.addEventListener('click', () => {
+            if (pField.type === "password") {
+                pField.type = "text";
+                vToggle.textContent = "Hide";
+            } else {
+                pField.type = "password";
+                vToggle.textContent = "Show";
+            }
+        });
+
+        function showLockAlert() {
+            document.getElementById('lockModal').style.display = 'flex';
+        }
+
+        document.getElementById('lockModal').addEventListener('click', function(e) {
+            if(e.target === this) closeLockAlert();
+        });
+
+        function closeLockAlert() {
+            document.getElementById('lockModal').style.display = 'none';
+        }
+
+        // Event Trigger Connection Hooks
+        uField.addEventListener('input', evaluateInputs);
+        pField.addEventListener('input', evaluateInputs);
+        sBtn.addEventListener('click', processAuthentication);
+
+        // Instant initialization running routine 
+        window.addEventListener('DOMContentLoaded', syncAllLayoutGreetings);
+    </script>
+</body>
+</html>
